@@ -7,7 +7,7 @@ import numpy as np
 import math
 def main():
     
-    #图像展示器
+    #图像展示类
     img_displayer = ImageDisplayer()
     # 数据预处理部分
     train_len = 7
@@ -20,13 +20,15 @@ def main():
     
     #特征提取
     feature_Extractor = FeatureExtractor()
-    KL_base, flattened_img_lib = feature_Extractor.get_KL_feature(orl_train_dataset.data, rate = 1.0)
+    
+    #特征脸空间和样本 
+    mean_data,KL_base, flattened_img_lib = feature_Extractor.get_KL_feature(orl_train_dataset.data, rate = 1.0)
     
     #特征匹配
-    feature_match = FeatureMatch(flattened_img_lib,orl_train_dataset.labels,KL_base)
+    feature_match = FeatureMatch(mean_data,flattened_img_lib,orl_train_dataset.labels,KL_base)
     
+    #测试
     accuracy = 0
-    
     test_len = len(orl_test_dataset.data)
 
     for order in range(1,test_len+1):

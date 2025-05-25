@@ -10,8 +10,9 @@ class FeatureExtractor:
         #数据中心化，之后计算小维度的特征值和特征向量即可
         flatten_data = self.img_flatten(data)
         #拿到前k个特征值对应的特征向量
-        KL_base = self.get_KL_base(flatten_data,rate)
-        return KL_base,flatten_data
+        mean_data,KL_base = self.get_KL_base(flatten_data,rate)
+        
+        return mean_data, KL_base, flatten_data
         
     
     #利用SVD对KL变换进行加速，只要计算400开头的那个维度所包含的
@@ -27,7 +28,7 @@ class FeatureExtractor:
         num = int(rate * min(n_samples, n_features))
         
         # 返回前num个主成分方向（转置为列向量）
-        return Vt[:num, :].T
+        return np.mean(flatten_data, axis=0),Vt[:num, :].T
         
 
     def img_flatten(self, imgdata):
