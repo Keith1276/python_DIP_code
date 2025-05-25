@@ -21,7 +21,7 @@ class Dataset:
                     labels.append(person_id)
                      
         return np.array(images), np.array(labels)
-    
+    GitHub Pull Requests
     #最初使用EVD方法实在太难算，准备降维分块做，但是后来发现可以SVD加速，下边的下采样也就失效了
     def img_down_sample(self,dest_width =46, dest_height = 56):
         for i in range(len(self.data)):
