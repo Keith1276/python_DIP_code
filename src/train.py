@@ -11,7 +11,7 @@ from model import leNet
 
 #####################################超参数定义################################
 train_batch_size = 8
-train_number_epochs = 50
+train_number_epochs = 200
 def imshow(img ,text = None,should_save = False, path = None):
     #展示一幅tensor图像
     npimg = img.numpy()
