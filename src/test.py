@@ -53,4 +53,5 @@ dataset_test = torchvision.datasets.ImageFolder(testing_dir, transform=transform
 test_loader = DataLoader(dataset_test, shuffle=True, batch_size=1)
 
 best_net = torch.load('../model/lenet.pt', weights_only=False)
-validate(test_loader, best_net, 0.81)
+#0.90效果还可以
+validate(test_loader, best_net, 0.90)

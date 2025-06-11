@@ -1,5 +1,14 @@
 import torch
 import torch.nn.functional as F
+
+
+class Accuracy(torch.nn.Module):
+    def __init__(self):
+        super(Accuracy, self).__init__()
+    def forward(self, model,output1,output2,label):
+        euclidean_distance = F.pairwise_distance(output1,output2,keepdim=True)
+        
+    
 class ContrastiveLoss(torch.nn.Module):
     """
     Contrastive loss function.

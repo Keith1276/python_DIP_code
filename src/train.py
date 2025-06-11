@@ -11,7 +11,7 @@ from model import leNet
 
 #####################################超参数定义################################
 train_batch_size = 8
-train_number_epochs = 200
+train_number_epochs = 100
 def imshow(img ,text = None,should_save = False, path = None):
     #展示一幅tensor图像
     npimg = img.numpy()
@@ -23,6 +23,12 @@ def imshow(img ,text = None,should_save = False, path = None):
         plt.savefig(path)
     plt.show()
 
+def show_valid_plot(iteration, acc, path):
+    plt.plot(iteration, acc)
+    plt.ylabel('accuracy')
+    plt.xlabel('batch')
+    if path:
+        plt.savefig(path)
 def show_train_plot(iteration, loss, path):
     plt.plot(iteration, loss)
     plt.ylabel('loss')
@@ -60,16 +66,17 @@ device = torch.device("mps")
 net = leNet().to(device)
 
 criterion = ContrastiveLoss()
-optimizer = optim.Adam(net.parameters(),lr = 0.0005)
+optimizer = optim.Adam(net.parameters(), lr=0.0005, weight_decay=1e-5) 
 
 ######################################### 训练开始 #################################################
 counter = []
 loss_history = []
 iteration_number = 0
-
+batch_num = len(siamese_dataset)/train_batch_size
 
 for epoch in range(0, train_number_epochs):
     for i, data in enumerate(train_dataloader, 0):
+        epoch_loss = 0.0
         img0, img1 , label = data
         #img0维度为torch.Size([32, 1, 100, 100])，32是batch，label为torch.Size([32, 1])
         img0, img1 , label = img0.to(device), img1.to(device), label.to(device) #数据移至GPU
@@ -81,7 +88,8 @@ for epoch in range(0, train_number_epochs):
         if i % 10 == 0 :
             iteration_number +=10
             counter.append(iteration_number)
-            loss_history.append(loss_contrastive.item())
+            
+    loss_history.append(loss_contrastive.item())
     print("Epoch number: {} , Current loss: {:.4f}\n".format(epoch,loss_contrastive.item()))
     
 show_train_plot(counter, loss_history, '../output/loss.jpg')
